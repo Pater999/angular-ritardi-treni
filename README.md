@@ -23,6 +23,7 @@ https://orariritarditreni.altervista.org
 
 ### Struttura cartelle
 API/8f6f57f05820875e649c7c27e24aa99d -> File php che agiscono come un server
+
 Client RitardiTreni -> Progetto angular
 
 ### Documentazione Api:
