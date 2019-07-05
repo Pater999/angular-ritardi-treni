@@ -1,0 +1,197 @@
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="card" style="width: 100%;" style="cursor: default">
+            <div class="card-header" style="font-weight: bold;">
+                Viaggio {{Andata_Ritorno}}
+            </div>
+            <ul class="list-group list-group-flush" style="cursor: default;">
+                <form>
+                    <div class="form-row" style="margin-bottom: 10px; padding-left: 5px; padding-right: 5px">
+                        <div class="col-md-6 col-sm-12 col-lg-4 col-xl-3">
+                            <label for="stazionePartenza" style="margin-bottom: 0px">Stazione partenza</label>
+                            <input type="text" style="background-color: white" class="form-control" id="stazionePartenza" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="stazionePartenza" disabled>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-4 col-xl-3">
+                            <label for="stazioneArrivo" style="margin-bottom: 0px">Stazione arrivo</label>
+                            <input type="text" style="background-color: white" class="form-control" id="stazioneArrivo" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="stazioneArrivo" disabled>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-4 col-xl-2">
+                            <label for="orario" style="margin-bottom: 0px">Ora</label>
+                            <select id="orario" class="form-control" (change)="oraAndata = $event.target.value">
+                                <option [selected]="oraAndata == '00'" value="00">00</option>
+                                <option [selected]="oraAndata == '1'" value="1">1</option>
+                                <option [selected]="oraAndata == '2'" value="2">2</option>
+                                <option [selected]="oraAndata == '3'" value="3">3</option>
+                                <option [selected]="oraAndata == '4'" value="4">4</option>
+                                <option [selected]="oraAndata == '5'" value="5">5</option>
+                                <option [selected]="oraAndata == '6'" value="6">6</option>
+                                <option [selected]="oraAndata == '7'" value="7">7</option>
+                                <option [selected]="oraAndata == '8'" value="8">8</option>
+                                <option [selected]="oraAndata == '9'" value="9">9</option>
+                                <option [selected]="oraAndata == '10'" value="10">10</option>
+                                <option [selected]="oraAndata == '11'" value="11">11</option>
+                                <option [selected]="oraAndata == '12'" value="12">12</option>
+                                <option [selected]="oraAndata == '13'" value="13">13</option>
+                                <option [selected]="oraAndata == '14'" value="14">14</option>
+                                <option [selected]="oraAndata == '15'" value="15">15</option>
+                                <option [selected]="oraAndata == '16'" value="16">16</option>
+                                <option [selected]="oraAndata == '17'" value="17">17</option>
+                                <option [selected]="oraAndata == '18'" value="18">18</option>
+                                <option [selected]="oraAndata == '19'" value="19">19</option>
+                                <option [selected]="oraAndata == '20'" value="20">20</option>
+                                <option [selected]="oraAndata == '21'" value="21">21</option>
+                                <option [selected]="oraAndata == '22'" value="22">22</option>
+                                <option [selected]="oraAndata == '23'" value="23">23</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6 col-xl-2">
+                            <label for="data" style="margin-bottom: 0px">Data</label>
+                            <input type="date" class="form-control" id="data" [ngModel]="dataAndataString" [min]="today" [value]="dataAndataString" (ngModelChange)="dataAndataString=$event"
+                                [ngModelOptions]="{standalone: true}">
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-sm-12 col-lg-6 col-xl-2">
+                            <label for="bottone" style="margin-bottom: 0px">&nbsp;</label>
+                            <input class="btn btn-outline-success form-control" id="bottone" type="button" value="Aggiorna" (click)="CercaSoluzioni()">
+                        </div>
+                    </div>
+                </form>
+            </ul>
+        </div>
+
+        <br>
+    </div>
+</div>
+
+<div class="row">
+
+    <div *ngIf="loadingSoluzioni" style="height: 630px; width: 100%; position: relative;">
+        <ngx-loading [show]="loadingSoluzioni" [config]=""></ngx-loading>
+    </div>
+
+    <div *ngIf="(Soluzioni == undefined) && loadingSoluzioni == false" class="col-md-12 col-lg-12 col-xl-12" style="text-align: left;">
+        <br>
+        <h1>Nessuna soluzione trovata</h1>
+        <div>
+            <ul>
+                <li class="text-muted">
+                    <h4>Controlla gli orari inseriti</h4>
+                </li>
+                <li class="text-muted">
+                    <h4>Cambia gli orari inseriti</h4>
+                </li>
+                <li class="text-muted">
+                    <h4>Cambia il percorso</h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div *ngIf="Soluzioni" class="col-md-12 col-lg-12 col-xl-12">
+        <table id="Desktop" class="table table-bordered" style="cursor: default;">
+            <thead class="thead-light">
+                <tr>
+                    <th style="width: 15%">Partenza</th>
+                    <th style="width: 15%">Arrivo</th>
+                    <th style="width: 13%">Durata</th>
+                    <th style="width: 13%">Cambi</th>
+                    <th style="width: 24%">Treno</th>
+                    <th style="width: 20%">Prezzo indicativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Soluzioni">
+                    <td style="font-size: 20px; font-weight: bold; text-align: center">
+                        <div routerLink="/Stazione/{{item.origin}}" title="Vai alla stazione" style="cursor: pointer; font-size:16px; font-weight:normal;">{{item.origin}}</div>{{item.departuretime | date:'HH:mm'}}</td>
+                    <td style="font-size: 20px; font-weight: bold; text-align: center">
+                        <div routerLink="/Stazione/{{item.destination}}" title="Vai alla stazione" style="cursor: pointer; font-size:16px; font-weight:normal;">{{item.destination}}</div>{{item.arrivaltime | date:'HH:mm'}}</td>
+                    <td style="text-align: center">{{item.duration}}</td>
+                    <td style="text-align: center">{{item.changesno}}</td>
+                    <td>
+                        <div *ngFor="let treni of item.trainlist">
+                            {{treni.trainidentifier}}
+                        </div>
+                    </td>
+                    <td style="text-align: center">{{item.minprice}} €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table id="Mobile" class="table table-bordered" style="cursor: default;">
+            <thead class="thead-light">
+                <tr style="font-size: 14px">
+                    <th>Partenza</th>
+                    <th>Arrivo</th>
+                    <th id="Mobile2">Durata</th>
+                    <th>Cambi</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Soluzioni">
+                    <td style="font-weight: bold; text-align: center">
+                        {{item.departuretime | date:'HH:mm'}}</td>
+                    <td style="font-weight: bold; text-align: center">
+                        {{item.arrivaltime | date:'HH:mm'}}</td>
+                    <td id="Mobile2" style="text-align: center">{{item.duration}}</td>
+                    <td style="text-align: center">{{item.changesno}}</td>
+                    <td style="text-align: center" (click)="AltreInfo(item)">
+                        <button type="button" class="btn btn-sm btn-info">
+                            <img style="width:20px;height:20px" src="assets/img/MoreIco.svg" />
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="Mobile" *ngIf="Informazioni" class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" style="cursor: default;">
+            <thead class="thead-light">
+                <tr style="font-size: 14px">
+                    <th>
+                        <button (click)="Informazioni = false" type="button" class="btn btn-sm btn-danger">X</button>&nbsp;&nbsp;&nbsp; Informazioni
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Partenza: {{Soluzione.departuretime | date:'HH:mm'}} - {{Soluzione.origin}}</td>
+                </tr>
+                <tr>
+                    <td>Arrivo: {{Soluzione.arrivaltime | date:'HH:mm'}} - {{Soluzione.destination}}</td>
+                </tr>
+                <tr>
+                    <td>Durata: {{Soluzione.duration}}</td>
+                </tr>
+                <tr>
+                    <td>Cambi: {{Soluzione.changesno}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        Treni:
+                        <div *ngFor="let treni of Soluzione.trainlist">
+                            {{treni.trainidentifier}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Prezzo: {{Soluzione.minprice}} €</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <button type="button" style="width: 100%;  margin-bottom: 10px;" class="btn btn-outline-secondary" (click)="backClicked()">&lt;&nbsp;&nbsp;&nbsp;Indietro</button>
+    </div>
+    <div *ngIf="AndataRitorno"  class="col-lg-6 col-md-12">
+        <button  type="button" style="width: 100%;"  class="btn btn-outline-secondary" (click)="MostraRitorno()">{{BtnAndataRitorno}}&nbsp;&nbsp;&nbsp;></button>
+    </div>
+</div>

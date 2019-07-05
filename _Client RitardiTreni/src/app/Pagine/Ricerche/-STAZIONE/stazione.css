@@ -1,0 +1,69 @@
+.InRitardo {
+    color: red;
+    font-weight: bold;
+}
+
+.Soppresso {
+    color: darkred;
+    font-weight: bold;
+}
+
+.InOrario
+{
+    color: 	#32CD32;
+    font-weight: bold;
+}
+
+
+
+.ng-select.custom {
+    border:0px;
+    min-height: 50px;
+    border: 0;
+    height: 50px;
+    font-size: 16px;
+    cursor: text;
+}
+
+.ng-select.custom .ng-select-container  {            
+    min-height: 50px;
+    border-radius: 0;
+    border: 0;
+    height: 0px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: text;
+}
+
+.ng-select-container {
+    padding-left: 9px;
+    cursor: text;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    padding-left: 19px;
+    cursor: text;
+}
+
+.btn-1 {
+    height: 80%; 
+    margin-right: 10px
+}
+
+@media (max-width: 990px) 
+{
+    #Layout
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 397px) 
+{
+    #Mobile
+    {
+        display: none;
+    }
+}
+
+

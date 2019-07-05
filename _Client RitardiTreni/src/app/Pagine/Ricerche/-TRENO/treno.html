@@ -1,0 +1,123 @@
+<div class="row">
+    <div class="col-lg-6 col-xl-6" [ngClass]="{'col-md-12': !MostraTreno,'col-md-4': MostraTreno}">
+        <div class="card" style="width: 100%;">
+            <div class="card-header bg-light" style="font-weight: bold;">
+                Cerca treno
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <div class="input-group mb-3" style="height:100% ;">
+                        <input [(ngModel)]="TrenoSelezionato" style="border: 0px; height: 100%; padding-left: 19px" type="number" class="form-control"
+                            placeholder="numero treno..." (keydown)="Keydown($event)">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" style="width:100px" type="button" (click)="CercaTreno()">Cerca</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <br>
+    </div>
+
+
+    <div *ngIf="MostraTreno" class="col-md-8 col-lg-6 col-xl-6" style="text-align: center">
+        <div class="card bg-light" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold;">
+                Treno {{Treno.categoria}} numero  - {{TrenoSelezionatoNome}}
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px; line-height: 44px">
+                    <div *ngIf="Treno.compRitardo[0].includes('orario'); else altro">
+                        Il Treno viaggia {{Treno.compRitardo[0]}}
+                    </div>
+                    <ng-template #altro>
+                        Il Treno viaggia con un {{Treno.compRitardo[0].split(" ")[0]}} di {{Treno.compRitardo[0].split(" ")[1]}}{{Treno.compRitardo[0].split("
+                        ")[2]}}
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+        <br>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-lg-4 col-xl-4" style="margin-bottom: 25px">
+        <div *ngIf="MostraTreno" class="card text-center" style="height: 100%;">
+            <div class="card-header bg-light " style="color:black">
+                Stazione di partenza - {{Treno.origine}}
+            </div>
+            <div class="card-body" style="text-align: left">
+                <p class="card-text">
+                    Partenza programmata: {{Treno.compOrarioPartenza }}
+                    <br> Partito alle {{Treno.compOrarioPartenzaZeroEffettivo}}
+                </p>
+            </div>
+            <div class="card-header bg-light " style="color:black;">
+                Stazione di arrivo - {{Treno.destinazione}}
+            </div>
+            <div class="card-body" style="text-align: left">
+                <p class="card-text">
+                    Arrivo programmato: {{Treno.compOrarioArrivo }}
+                    <br> Arriverà alle {{Treno.compOrarioArrivoZeroEffettivo}}
+                </p>
+            </div>
+            <div class="card-header" style="font-weight: bold;">
+                Opzioni
+            </div>
+            <div class="card-body" style="text-align: center">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px; line-height: 44px">
+                        <button title="Aggiorna" type="button" class="btn btn-1 btn-success" (click)="Aggiorna()">
+                            <img style="width:23px;height:23px" src="assets/img/Aggiorna.png" />
+                        </button>
+                        <button *ngIf="TrenoPreferito == false" title="Aggiungi a treni preferiti" style="margin-left: 20px" type="button" class="btn btn-1 btn-warning"
+                            (click)="AggiungiTrenoPreferito(TrenoSelezionatoNome,TrenoStazionePartenza)">
+                            <img style="width:23px;height:23px" src="assets/img/PreferitoX.png" />
+                        </button>
+                        <button *ngIf="TrenoPreferito == true" title="Rimuovi da treni preferiti" style="margin-left: 20px" type="button" class="btn btn-1 btn-warning"
+                            (click)="RimuoviTrenoPreferito(TrenoSelezionatoNome,TrenoStazionePartenza)">
+                            <img style="width:23px;height:23px" src="assets/img/Preferito.png" />
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="col-md-6 col-lg-8 col-xl-8">
+        <div *ngIf="loadingFermate" style="height: 600px; width: 100%; position: relative;">
+            <ngx-loading [show]="loadingFermate" [config]=""></ngx-loading>
+        </div>
+
+        <table *ngIf="(MostraTreno == true)" class="table table-striped" style="cursor: default;">
+            <thead class="table-default">
+                <tr class="table-secondary" style="text-align: center">
+                    <th style="font-size: 17px" colspan="5">Fermate</th>
+                </tr>
+                <tr style="font-size: 14px">
+                    <th style="width: 25%">Stazione</th>
+                    <th style="width: 25%">Orario</th>
+                    <th id="Mobile" style="width: 25%">Partenza</th>
+                    <th style="width: 25%">Binario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Treno.fermate | paginate: { itemsPerPage:9, currentPage: p1, id:'Treno'} ;let i=index" style="font-size: 14px">
+                    <td routerLink="/Stazione/{{item.stazione}}" style="cursor: pointer;" title="Vai alla stazione">{{item.stazione}}</td>
+                    <td>{{item.programmata | date:'HH:mm'}}</td>
+                    <td id="Mobile">{{item.partenzaReale | date:'HH:mm'}}</td>
+                    <td *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoPartenzaDescrizione}}</td>
+                    <ng-template #altro>
+                        <td>{{item.binarioProgrammatoPartenzaDescrizione}}</td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="(MostraTreno == true)" style="text-align:right">
+            <pagination-controls id="Treno" (pageChange)="p1 = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

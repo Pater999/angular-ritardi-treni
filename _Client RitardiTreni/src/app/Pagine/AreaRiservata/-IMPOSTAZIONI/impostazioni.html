@@ -1,0 +1,218 @@
+<div class="row">
+    <div class="col-md-6 col-xl-4 col-lg-4">
+        <div class="card" style="width: 100%; cursor: default;">
+            <div class="card-header" style="display:inline-block;">
+                <div style="width:50%; display:inline-block;">
+                    <strong>Informazioni utente</strong>
+                </div>
+                <div style="width:50%; text-align: right; display:inline-block;">
+                    <a style="color:#007bff; cursor: pointer; border: 1px; border-color: #007bff" (click)="SalvaForm()">SALVA</a>
+                </div>
+            </div>
+            <form [formGroup]="utenteForm" novalidate>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="padding-top:0px; padding-bottom: 0px">
+                        <div class="form-group" style="margin-bottom: 10px">
+                            <label for="username" class="col-form-label-sm" style="margin-bottom: 0px">Username</label>
+                            <input type="text" formControlName="username" style="border-color: white; background-color: white; padding-left: 0px; font-weight: bold"
+                                class="form-control form-control-sm" id="username" disabled>
+                        </div>
+                    </li>
+                    <li class="list-group-item" style="padding-top:0px; padding-bottom: 0px">
+                        <div class="form-group" style="margin-bottom: 10px">
+                            <label for="Nome" class="col-form-label-sm" style="margin-bottom: 0px">Nome</label>
+                            <input type="text" formControlName="nome" class="form-control form-control-sm" id="Nome">
+                        </div>
+                    </li>
+                    <li class="list-group-item" style="padding-top:0px; padding-bottom: 0px">
+                        <div class="form-group" style="margin-bottom: 10px">
+                            <label class="col-form-label-sm" style="margin-bottom: 0px">Cognome</label>
+                            <input type="text" formControlName="cognome" class="form-control form-control-sm">
+                        </div>
+                    </li>
+                    <li class="list-group-item" style="padding-top:0px; padding-bottom: 0px">
+                        <div class="form-group" style="margin-bottom: 10px">
+                            <label class="col-form-label-sm" style="margin-bottom: 0px">Email</label>
+                            <input type="text" formControlName="email" class="form-control form-control-sm">
+                        </div>
+                    </li>
+                    <li class="list-group-item" style="padding-top:0px; padding-bottom: 0px">
+                        <div class="form-group" style="margin-bottom: 10px">
+                            <label for="Password" class="col-form-label-sm" style="margin-bottom: 0px">Password</label>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control form-control-sm" style="background-color: white" id="Password" value="aaaaaaaaaa"
+                                    disabled>
+                                <div class="input-group-append">
+                                    <span style="cursor: pointer;" (click)="open(content)" class="input-group-text">Cambia</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div *ngIf="SalvatoInfo == true" class="alert alert-success" role="alert">
+            <strong>Complimenti</strong> - Informazioni aggiornate con successo.
+        </div>
+        <br>
+    </div>
+
+    <div class="col-md-6 col-xl-4 col-lg-4">
+
+        <div class="card" style="width: 100%; margin-bottom: 15px; cursor: default;">
+            <div class="card-header">
+                <strong>Aggiungi stazione</strong>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span style="cursor: default;" class="input-group-text" id="inputGroup-sizing-default">Cerca</span>
+            </div>
+            <input (keyup)="TextBoxChange($event.target.value)" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <table class="table table-light" style="cursor: default;">
+            <tr>
+                <th style="width:20%;text-align:left">#</th>
+                <th style="width:50%">Nome</th>
+            </tr>
+                <tr *ngFor="let item of StazioniAggiungere | paginate: { itemsPerPage:8, currentPage: p3, id: 'Pag'} ;let i=index">
+                <th style="text-align: left;">
+                    <button title="Salva" type="button" class="btn btn-sm btn-ligth" (click)="AggiungiStazione(item.Nome)">
+                        <img style="width:15px;height:15px" src="assets/img/like.svg" />
+                    </button>
+                </th>
+                <td>
+                    {{item.Nome}}
+                </td>
+            </tr>
+        </table>
+        <div style="text-align:right">
+            <pagination-controls id="Pag" (pageChange)="p3 = $event"></pagination-controls>
+        </div>
+
+        <br>
+    </div>
+
+    <div class="col-md-12 col-xl-4 col-lg-4">
+        <div class="card" style="width: 100%; margin-bottom: 15px">
+            <div class="card-header" style="cursor: default; padding: 0 0 0 0">
+                <select (change)="CambiaVisualizzazione($event.target.value)" class="custom-select custom-select-lg" style="cursor: pointer; padding-top: 9px; padding-bottom:9px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected value="Stazioni">Stazioni salvate</option>
+                    <option value="Treni">Treni salvati</option>
+                </select>
+            </div>
+        </div>
+        <table *ngIf="StazioniTreni == 'Stazioni'" class="table table-light" style="cursor: default;">
+            <tr>
+                <th style="width:70%">Nome</th>
+                <th style="width:30%; text-align: center"></th>
+            </tr>
+            <tr *ngFor="let item of ListaStazioniSalvate | paginate: { itemsPerPage:9, currentPage: p1, id:'Stazioni'} ;let i=index">
+                <th title="Vai alla stazione" style="cursor: pointer;" routerLink="/Stazione/{{item.nome_stazione}}">
+                    {{item.nome_stazione}}
+                </th>
+                <td style="text-align: right; padding-right: 30px">
+                    <button title="Elimina" type="button" class="btn btn-danger" (click)="OnDelStazione(item.nome_stazione)">
+                        <img style="width:20px;height:20px" src="assets/img/DeleteIco.svg" />
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <table *ngIf="StazioniTreni == 'Treni'" class="table table-light" style="cursor: default;">
+            <tr>
+                <th style="width:70%">Numero</th>
+                <th style="width:30%; text-align: center"></th>
+            </tr>
+            <tr *ngFor="let item of ListaTreniSalvati | paginate: { itemsPerPage:9, currentPage: p2, id:'Treni'} ;let i=index">
+                <th title="Vai al treno" style="cursor: pointer;" routerLink="/Treno/{{item.id_treno}}/{{item.id_stazione}}">
+                    {{item.id_treno}}
+                </th>
+                <td style="text-align: right; padding-right: 30px">
+                    <button title="Elimina" type="button" class="btn btn-danger" (click)="OnDelTreno(item.id_treno, item.id_stazione)">
+                        <img style="width:20px;height:20px" src="assets/img/DeleteIco.svg" />
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 0 0 0 0">
+                    <div class="input-group" style="width: 100%; height: 45px;">
+                        <input type="number" [(ngModel)]="TrenoDaAggiungere" style="border-left: 0px" class="form-control" placeholder="Numero">
+                        <div class="input-group-append">
+                            <span style="cursor: pointer; border-right: 0px" title="Aggiungi" class="input-group-text" (click)="AggiungiTreno()">Aggiungi</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div *ngIf="StazioniTreni == 'Stazioni'" style="text-align:right">
+            <pagination-controls id="Stazioni" (pageChange)="p1 = $event"></pagination-controls>
+        </div>
+        <div *ngIf="StazioniTreni == 'Treni'" style="text-align:right">
+            <pagination-controls id="Treni" (pageChange)="p2 = $event"></pagination-controls>
+        </div>
+        <div *ngIf="ErroreTreno == true" class="alert alert-danger" role="alert" (click)="ErroreTreno = false" style="cursor: pointer;">
+            <strong>Nessun corrispondenza trovatata</strong> - Inserire un numero treno corretto!
+        </div>
+        <div *ngIf="GiaAggiunta == true" class="alert alert-danger" role="alert" (click)="GiaAggiunta = false" style="cursor: pointer;">
+            <strong>Stazione già salvata!</strong> - Inserire una stazione diversa!
+        </div>
+    </div>
+    <br>
+</div>
+
+
+
+<!-- MODAL CAMBIO PASSWORD -->
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Cambia password</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form *ngIf="Aggiornato == false" [formGroup]="passwordForm" novalidate>
+            <div class="form-group">
+                <label for="vecchiapassword">Vecchia password</label>
+                <input type="password" formControlName="vecchiapassword" class="form-control" id="vecchiapassword" placeholder="Vecchia password">
+            </div>
+            <div class="form-group">
+                <label for="nuovaPassword">Nuova password</label>
+                <input type="password" formControlName="nuovaPassword" class="form-control" id="nuovaPassword" placeholder="Nuova password">
+            </div>
+            <div class="form-group">
+                <label for="nuovaPassword2">Ripeti nuova password</label>
+                <input type="password" formControlName="nuovaPassword2" class="form-control" id="nuovaPassword2" placeholder="Nuova password">
+            </div>
+        </form>
+        <div *ngIf="Aggiornato == true">
+            <div *ngIf="ErroreVecchiaPass == true" class="alert alert-danger" role="alert">
+                <strong>La vecchia password inserita non è corretta</strong> - Riprova.
+            </div>
+            <div *ngIf="ErroreNuovaPass == true" class="alert alert-danger" role="alert">
+                <strong>Le nuove password inserite non sono uguali</strong> - Le password devono essere uguali e devono essere formate
+                da almeno 6 caratteri!.
+            </div>
+            <div *ngIf="(ErroreVecchiaPass != true) && (ErroreNuovaPass != true)" class="alert alert-success" role="alert">
+                <strong>Complimenti</strong> - Password cambiata con successo.
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="Aggiornato == true" type="button" class="btn btn-outline-danger" (click)="c('Chiudi')">Chiudi</button>
+        <button *ngIf="Aggiornato == false" type="button" class="btn btn-outline-success" (click)="CambiaPassword()">Salva</button>
+        <button *ngIf="Aggiornato == false" type="button" class="btn btn-outline-danger" (click)="c('Annulla')">Annulla</button>
+    </div>
+</ng-template>
+
+<style>
+    input[type='number'] {
+        -moz-appearance: textfield;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+</style>

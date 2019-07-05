@@ -1,0 +1,15 @@
+@media (max-width: 990px) 
+{
+    #Layout
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 397px) 
+{
+    #Mobile
+    {
+        display: none;
+    }
+}

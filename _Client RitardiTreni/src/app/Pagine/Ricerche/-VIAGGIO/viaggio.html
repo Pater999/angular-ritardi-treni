@@ -1,0 +1,139 @@
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="margin-bottom: 25px">
+        <h5>Cerca solizioni di viaggio </h5>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="margin-bottom: 25px">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" (change)="AndataRitorno = !AndataRitorno">
+            <label class="form-check-label" for="defaultCheck1">
+                Andata e ritorno
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="margin-bottom: 20px">
+        <div class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default;">
+                Da
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <ng-select class="custom" [items]="StazioniPartenza" bindLabel="name" bindValue="name" [loading]="StazioneLoadingPartenza"
+                        [typeahead]="StazioneTypeheadPartenza" [(ngModel)]="StazioneSelezionataPartenza"
+                        placeholder="Stazione di partenza">
+                    </ng-select>
+                </li>
+            </ul>
+            <div class="card-header" style="font-weight: bold; cursor: default;">
+                A
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <ng-select class="custom" [items]="StazioniArrivo" bindLabel="name" bindValue="name" [loading]="StazioneLoadingArrivo" [typeahead]="StazioneTypeheadArrivo"
+                        [(ngModel)]="StazioneSelezionataArrivo" placeholder="Stazione di arrivo">
+                    </ng-select>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="margin-bottom: 20px">
+        <div class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default;">
+                Andata
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <div style="width: 20%; min-width: 62px; display:inline-block;">
+                        <select style="padding-left: 10px; width: 62px;  height: 50px; border:0px" class="form-control" (change)="OrarioAndata = $event.target.value">
+                            <option value="00">00</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option selected value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                    </div>
+                    <div (click)="DatePickerAndata.open()" style="width: 75%;display:inline-block; min-width: 60px;">
+                        <input disabled style="background: white;" type="text" class="DataPicker" matInput [min]="minDataAndata" (dateChange)="CambioDataAndata($event.value)"
+                            [value]="DataOdierna" [matDatepicker]="DatePickerAndata">
+                        <mat-datepicker-toggle matSuffix [for]="DatePickerAndata"></mat-datepicker-toggle>
+                        <mat-datepicker #DatePickerAndata disabled="false"></mat-datepicker>
+                    </div>
+                </li>
+            </ul>
+            <div *ngIf="AndataRitorno == true" class="card-header" style="font-weight: bold; cursor: default;">
+                Ritorno
+            </div>
+            <ul *ngIf="AndataRitorno == true" class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <div style="width: 20%; min-width: 62px; display:inline-block;">
+                        <select style="padding-left: 10px; width: 62px;  height: 50px; border:0px" class="form-control" (change)="OrarioRitorno = $event.target.value">
+                            <option value="00">00</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option selected value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                    </div>
+                    <div (click)="DatePickerRitorno.open()" style="width: 75%;display:inline-block; min-width: 60px;">
+                        <input disabled style="background: white;" type="text" class="DataPicker" [min]="minDataRitorno" (dateChange)="DataRitorno = $event.value"
+                            [value]="minDataRitorno" matInput [matDatepicker]="DatePickerRitorno">
+                        <mat-datepicker-toggle style="width: 10%" matSuffix [for]="DatePickerRitorno"></mat-datepicker-toggle>
+                        <mat-datepicker #DatePickerRitorno disabled="false"></mat-datepicker>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-success btn-lg btn-block" (click)="CercaSoluzioni()">Mostra soluzioni</button>
+    </div>
+</div>

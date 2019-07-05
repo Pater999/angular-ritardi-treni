@@ -1,0 +1,119 @@
+<div *ngIf="!Registrato" class="d-flex justify-content-center align-items-center " >
+    
+    <form id="Desktop" [formGroup]="registerForm" novalidate>
+        <h2 style="text-align: center; margin-bottom: 15px">Registrati</h2>
+        <div class="form-group" [ngClass]="{
+        'has-danger': registerForm.controls.username.invalid, 
+        'has-success': registerForm.controls.username.valid
+      }">
+            <label>Username*</label>
+            <input formControlName="username" type="text" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Nome</label>
+            <input type="text" formControlName="nome" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Cognome</label>
+            <input type="text" formControlName="cognome" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input formControlName="email" type="email" class="form-control">
+        </div>
+
+        <div class="form-group" [ngClass]="{
+        'has-danger': registerForm.controls.password.invalid, 
+        'has-success': registerForm.controls.password.valid 
+      }">
+            <label>Password*</label>
+            <input formControlName="password" type="password" class="form-control" required>
+        </div>
+
+        <div *ngIf="NonValido == true" class="alert alert-danger" role="alert" (click)="NonValido = false" style="cursor: pointer;">
+            <strong>Inserisci Username e password</strong> - L'username deve essere maggiore di 6 caratteri e la password maggiore
+            di 5 caratteri!
+        </div>
+
+        <div *ngIf="UsernamePresente == true" class="alert alert-danger" role="alert" (click)="UsernamePresente = false" style="cursor: pointer;">
+            <strong>L'username scelto è già in uso</strong> - Prova a cambiare username.
+        </div>
+
+        <div *ngIf="ErroreLatoServer == true" class="alert alert-danger" role="alert" (click)="ErroreLatoServer = false" style="cursor: pointer;">
+            <strong>Ops qualcosa è andato storto</strong> - Riprova più tardi.
+        </div>
+
+        <button style="margin-bottom: 10px" type="button" (click)="Register()" class="btn btn-success btn-lg btn-block">Registrati</button>
+        <p style="text-align: left">Hai già un account? <a routerLink="/Login">Login</a></p>
+    </form>
+
+
+    <form id="Mobile" [formGroup]="registerForm" novalidate>
+            <h2 style="text-align: center; margin-bottom: 15px">Registrati</h2>
+            <div class="form-group" [ngClass]="{
+            'has-danger': registerForm.controls.username.invalid, 
+            'has-success': registerForm.controls.username.valid
+          }">
+                <label>Username*</label>
+                <input formControlName="username" type="text" class="form-control" required>
+            </div>
+    
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" formControlName="nome" class="form-control">
+            </div>
+    
+            <div class="form-group">
+                <label>Cognome</label>
+                <input type="text" formControlName="cognome" class="form-control">
+            </div>
+    
+            <div class="form-group">
+                <label>Email</label>
+                <input formControlName="email" type="email" class="form-control">
+            </div>
+    
+            <div class="form-group" [ngClass]="{
+            'has-danger': registerForm.controls.password.invalid, 
+            'has-success': registerForm.controls.password.valid 
+          }">
+                <label>Password*</label>
+                <input formControlName="password" type="password" class="form-control" required>
+            </div>
+    
+            <div *ngIf="NonValido == true" class="alert alert-danger" role="alert" (click)="NonValido = false" style="cursor: pointer;">
+                <strong>Inserisci Username e password</strong> - L'username deve essere maggiore di 5 e minore di 10 caratteri e la password maggiore
+                di 5 caratteri!
+            </div>
+    
+            <div *ngIf="UsernamePresente == true" class="alert alert-danger" role="alert" (click)="UsernamePresente = false" style="cursor: pointer;">
+                <strong>L'username scelto è già in uso</strong> - Prova a cambiare username.
+            </div>
+    
+            <div *ngIf="ErroreLatoServer == true" class="alert alert-danger" role="alert" (click)="ErroreLatoServer = false" style="cursor: pointer;">
+                <strong>Ops qualcosa è andato storto</strong> - Riprova più tardi.
+            </div>
+    
+            <button style="margin-bottom: 10px" type="button" (click)="Register()" class="btn btn-success btn-lg btn-block">Registrati</button>
+            <p style="text-align: left">Hai già un account? <a routerLink="/Login">Login</a></p>
+        </form>
+
+</div>
+
+<div *ngIf="Registrato">
+    <div class="jumbotron">
+        <h1 *showItBootstrap="['xl','lg']" class="display-4">Complimenti!</h1>
+        <h2 *showItBootstrap="['md']" class="display-4">Complimenti!</h2>
+        <h4 *showItBootstrap="['xs','sm']">Complimenti!</h4>
+        <p class="lead">Ti sei registrato con successo</p>
+        <hr class="my-4">
+        <p>Ora puoi usufruire di tutte le fuzioni per gli utenti registrati.<br>
+            Non ti resta che loggarti</p>
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" routerLink="/Login" role="button">Login</a>
+        </p>
+      </div>
+</div>

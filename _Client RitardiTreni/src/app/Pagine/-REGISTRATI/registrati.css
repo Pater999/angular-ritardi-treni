@@ -1,0 +1,37 @@
+#Mobile
+{
+    width:100%;
+    background-color: rgba(224, 213, 213, 0.493);
+    text-align: center;
+    padding: 20px 20px 20px 20px; 
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px; 
+    -webkit-border-radius: 10px 10px 10px 10px;
+}
+
+#Desktop
+{
+    width:700px; 
+    background-color: rgba(224, 213, 213, 0.493);
+    text-align: left; 
+    padding: 20px 50px 50px 50px; 
+    border-radius: 20px 20px 20px 20px; 
+    -moz-border-radius: 20px 20px 20px 20px; 
+    -webkit-border-radius: 20px 20px 20px 20px;
+}
+
+@media (max-width: 1000px) 
+{
+    #Desktop
+    {
+        display: none;
+    }
+}
+
+@media (min-width: 1000px) 
+{
+    #Mobile
+    {
+        display: none;
+    }
+}

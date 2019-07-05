@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-md-12 col-lg-6 col-xl-7">
+        <div class="card" style="width: 100%; margin-bottom: 15px">
+            <div class="card-header" style="cursor: default; padding: 0 0 0 0">
+                <select (change)="CambiaStazione($event.target.value)" class="custom-select custom-select-lg" style="cursor: pointer; padding-top: 9px; padding-bottom:9px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected disabled>Stazioni salvate</option>
+                    <option *ngFor="let item of ListaStazioniSalvate" [value]='item.nome_stazione'>{{item.nome_stazione}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="loading" style="height: 600px; width: 100%; position: relative;">
+            <ngx-loading [show]="loading" [config]=""></ngx-loading>
+        </div>
+
+        <table *ngIf="(partenze.length > 0) && (partenze != undefined)" class="table  table-striped" style="cursor:default;">
+            <thead class="table-default">
+                <tr class="table-secondary" style="text-align: center">
+                    <th style="font-size: 17px; cursor: pointer;" colspan="5" routerLink="/Stazione/{{StazionePreferita}}">PARTENZE - {{StazionePreferita}}</th>
+                </tr>
+                <tr style="font-size: 14px">
+                    <th style="width: 9%">Nr</th>
+                    <th style="width: 11%">Orario</th>
+                    <th style="width: 44%">Per</th>
+                    <th style="width: 28%">Stato</th>
+                    <th id="Mobile" style="width: 8%">Binario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of partenze | paginate: { itemsPerPage:9, currentPage: p1, id:'Partenze'} ;let i=index" style="font-size: 14px">
+                    <td routerLink="/Treno/{{item.numeroTreno}}/{{item.codOrigine}}" style="cursor: pointer;" title="Monitora">{{item.numeroTreno}}</td>
+                    <td>{{item.compOrarioPartenza}}</td>
+                    <td routerLink="/Stazione/{{item.destinazione}}" style="cursor: pointer;" title="Vai">{{item.destinazione}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}">{{item.compRitardo[0]}}</td>
+                    <td id="Mobile" *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoPartenzaDescrizione}}</td>
+                    <ng-template #altro>
+                        <td id="Mobile">{{item.binarioProgrammatoPartenzaDescrizione}}</td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="(partenze.length > 0) && (partenze != undefined)" style="text-align:right">
+            <pagination-controls id="Partenze" (pageChange)="p1 = $event"></pagination-controls>
+        </div>
+        <br>
+
+    </div>
+
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <div class="card" style="width: 100%; margin-bottom: 15px">
+            <div class="card-header" style="cursor: default; padding: 0 0 0 0">
+                <select (change)="CambiaTreno($event.target.value)" class="custom-select custom-select-lg" style="cursor: pointer; padding-top: 9px; padding-bottom:9px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected disabled>Treni salvati</option>
+                    <option *ngFor="let item of ListaTreniSalvati" [value]='item.id_treno +"|"+item.id_stazione'>{{item.id_treno}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="loadingFermate" style="height: 600px; width: 100%; position: relative;">
+            <ngx-loading [show]="loadingFermate" [config]=""></ngx-loading>
+        </div>
+
+        <table *ngIf="(MostraTreno == true)" class="table table-striped" style="cursor: default;">
+            <thead class="table-default">
+                <tr class="table-secondary" style="text-align: center">
+                    <th style="font-size: 17px" colspan="5">Fermate</th>
+                </tr>
+                <tr style="font-size: 14px">
+                    <th style="width: 25%">Stazione</th>
+                    <th style="width: 25%">Orario</th>
+                    <th id="Mobile" style="width: 25%">Partenza</th>
+                    <th style="width: 25%">Binario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Treno.fermate | paginate: { itemsPerPage:9, currentPage: p2, id:'Treno'} ;let i=index" style="font-size: 14px">
+                    <td routerLink="/Stazione/{{item.stazione}}" style="cursor: pointer;" title="Vai alla stazione">{{item.stazione}}</td>
+                    <td>{{item.programmata | date:'HH:mm'}}</td>
+                    <td id="Mobile">{{item.partenzaReale | date:'HH:mm'}}</td>
+                    <td *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoPartenzaDescrizione}}</td>
+                    <ng-template #altro>
+                        <td>{{item.binarioProgrammatoPartenzaDescrizione}}</td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="(MostraTreno == true)" style="text-align:right">
+            <pagination-controls id="Treno" (pageChange)="p2 = $event"></pagination-controls>
+        </div>
+
+
+    </div>
+
+</div>

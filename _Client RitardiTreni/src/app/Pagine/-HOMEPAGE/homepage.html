@@ -1,0 +1,222 @@
+<div class="row">
+    <div class="col-md-12 col-lg-5 col-xl-5">
+
+        <div *showItBootstrap="['md','lg','xl']" class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default;">
+                Cerca stazione
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <ng-select class="custom" [items]="Stazioni" bindLabel="Nome" bindValue="Nome" [loading]="StazioneLoading" [typeahead]="StazioneTypehead"
+                        [(ngModel)]="StazioneSelezionataNome" (change)="onChangeDesktop()">
+                    </ng-select>
+                </li>
+            </ul>
+        </div>
+
+        <div *showItBootstrap="['sm','xs']" class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default;">
+                Cerca stazione
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                    <ng-select class="custom" [items]="Stazioni" bindLabel="Nome" bindValue="Nome" [loading]="StazioneLoading" [typeahead]="StazioneTypehead"
+                        [(ngModel)]="StazioneSelezionataNome" (change)="onChange()">
+                    </ng-select>
+                </li>
+            </ul>
+        </div>
+        <br>
+
+        <div *showItBootstrap="['md','lg','xl']" class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default; padding: 0 0 0 0">
+                <select (change)="CambiaStazioni($event.target.value)" class="custom-select custom-select-lg" style="padding-top: 10px; padding-bottom:10px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected value="Principali">Stazioni principali</option>
+                    <option value="Salvate">Stazioni salvate</option>
+                </select>
+            </div>
+            <ul *ngIf="StazioniSalvate == false" class="list-group list-group-flush" style="cursor: pointer;">
+                <li class="list-group-item" routerLink="/HomePage/ROMA TERMINI">
+                    ROMA TERMINI
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/MILANO CENTRALE">
+                    MILANO CENTRALE
+                </li>
+                <li class="list-group-item" style="padding-right: 0px" routerLink="/HomePage/FIRENZE S.M.N.">
+                    FIRENZE SANTA MARIA NOVELLA
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/VERONA PORTA NUOVA">
+                    VERONA PORTA NUOVA
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/BOLOGNA C.LE">
+                    BOLOGNA CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/NAPOLI CENTRALE">
+                    NAPOLI CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/BARI CENTRALE">
+                    BARI CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/TORINO P.NUOVA">
+                    TORINO PORTA NUOVA
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/GENOVA P.PRINCIPE">
+                    GENOVA PRINCIPE
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/VENEZIA SANTA LUCIA">
+                    VENEZIA SANTA LUCIA
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/BRESCIA">
+                    BRESCIA
+                </li>
+                <li class="list-group-item" routerLink="/HomePage/TRENTO">
+                    TRENTO
+                </li>
+            </ul>
+            <ul *ngIf="StazioniSalvate == true" class="list-group list-group-flush" style="cursor: pointer;">
+                <li *ngFor="let item of ListaStazioniSalvate" class="list-group-item" routerLink="/HomePage/{{item.nome_stazione}}">
+                    {{item.nome_stazione}}
+                </li>
+            </ul>
+            <ul *ngIf="noLogin == true" class="list-group list-group-flush" style="cursor: pointer;">
+                <li class="list-group-item">
+                    Devi prima loggarti per visualizzare le stazioni salvate!
+                    <a routerLink="/Login">Login</a>
+                </li>
+            </ul>
+        </div>
+
+        <div *showItBootstrap="['sm','xs']" class="card" style="width: 100%;">
+            <div class="card-header" style="font-weight: bold; cursor: default;  padding: 0 0 0 0">
+                <select (change)="CambiaStazioni($event.target.value)" class="custom-select custom-select-lg" style="padding-top: 10px; padding-bottom:10px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected value="Principali">Stazioni principali</option>
+                    <option value="Salvate">Stazioni salvate</option>
+                </select>
+            </div>
+            <ul *ngIf="StazioniSalvate == false" class="list-group list-group-flush" style="cursor: pointer;">
+                <li class="list-group-item" routerLink="/Stazione/ROMA TERMINI">
+                    ROMA TERMINI
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/MILANO CENTRALE">
+                    MILANO CENTRALE
+                </li>
+                <li class="list-group-item" style="padding-right: 0px" routerLink="/Stazione/FIRENZE S.M.N.">
+                    FIRENZE SANTA MARIA NOVELLA
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/VERONA PORTA NUOVA">
+                    VERONA PORTA NUOVA
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/BOLOGNA C.LE">
+                    BOLOGNA CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/NAPOLI CENTRALE">
+                    NAPOLI CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/BARI CENTRALE">
+                    BARI CENTRALE
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/TORINO P.NUOVA">
+                    TORINO PORTA NUOVA
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/GENOVA P.PRINCIPE">
+                    GENOVA PRINCIPE
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/VENEZIA SANTA LUCIA">
+                    VENEZIA SANTA LUCIA
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/BRESCIA">
+                    BRESCIA
+                </li>
+                <li class="list-group-item" routerLink="/Stazione/TRENTO">
+                    TRENTO
+                </li>
+            </ul>
+            <ul *ngIf="StazioniSalvate == true" class="list-group list-group-flush" style="cursor: pointer;">
+                <li *ngFor="let item of ListaStazioniSalvate" class="list-group-item" routerLink="/Stazione/{{item.nome_stazione}}">
+                    {{item.nome_stazione}}
+                </li>
+            </ul>
+        </div>
+        <br>
+
+    </div>
+    <div *showItBootstrap="['md','lg','xl']" class="col-md-12 col-lg-7 col-xl-7">
+        <div class="card" style="width: 100%; margin-bottom: 15px">
+            <div class="card-header" style="cursor: default; padding: 0 0 0 0">
+                <select (change)="CambiaVisualizzazione($event.target.value)" class="custom-select custom-select-lg" style="cursor: pointer; padding-top: 9px; padding-bottom:9px; padding-left: 20px; width:100%; height: 100%; border: 0px;background-color: rgba(0, 0, 0, 0);">
+                    <option selected value="Partenze">Partenze stazione - {{StazioneSelezionataNome}}</option>
+                    <option value="Arrivi">Arrivi stazione - {{StazioneSelezionataNome}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="(loadingPartenze == true) && (ArriviOPartenze == 'Partenze')" style="height: 600px; width: 100%; position: relative;">
+            <ngx-loading [show]="loadingPartenze" [config]=""></ngx-loading>
+        </div>
+
+        <table *ngIf="(partenze.length > 0) && (partenze != undefined) && (ArriviOPartenze == 'Partenze')" class="table  table-striped"
+            style="cursor:default;">
+            <thead class="table-default">
+                <tr style="font-size: 14px">
+                    <th style="width: 9%">Nr</th>
+                    <th style="width: 11%">Orario</th>
+                    <th style="width: 44%">Per</th>
+                    <th style="width: 28%">Stato</th>
+                    <th id="Mobile" style="width: 8%">Binario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of partenze | paginate: { itemsPerPage:13, currentPage: p1, id:'Partenze'} ;let i=index" style="font-size: 14px">
+                    <td routerLink="/Treno/{{item.numeroTreno}}/{{item.codOrigine}}" style="cursor: pointer;" title="Monitora">{{item.numeroTreno}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}">{{item.compOrarioPartenza}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}" routerLink="/Stazione/{{item.destinazione}}" style="cursor: pointer;" title="Vai">{{item.destinazione}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop'),'InOrario': item.compRitardo[0].includes('orario')}">{{item.compRitardo[0]}}</td>
+                    <td id="Mobile" *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoPartenzaDescrizione}}</td>
+                    <ng-template #altro>
+                        <td id="Mobile">{{item.binarioProgrammatoPartenzaDescrizione}}</td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="(ArriviOPartenze == 'Partenze') && (loadingArrivi == false)" style="text-align:right">
+            <pagination-controls id="Partenze" (pageChange)="p1 = $event"></pagination-controls>
+        </div>
+
+        <div *ngIf="(loadingArrivi == true) && (ArriviOPartenze == 'Arrivi')" style="height: 600px; width: 100%; position: relative;">
+            <ngx-loading [show]="loadingArrivi" [config]=""></ngx-loading>
+        </div>
+
+        <table *ngIf="(arrivi.length > 0) && (arrivi != undefined) && (ArriviOPartenze == 'Arrivi')" class="table  table-striped"
+            style="cursor: default;">
+            <thead class="table-default">
+                <tr style="font-size: 14px">
+                    <th style="width: 9%">Nr</th>
+                    <th style="width: 11%">Orario</th>
+                    <th style="width: 44%">Da</th>
+                    <th style="width: 28%">Stato</th>
+                    <th id="Mobile" style="width: 8%">Binario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of arrivi | paginate: { itemsPerPage:13, currentPage: p2, id:'Arrivi'} ;let i=index" style="font-size: 14px">
+                    <td routerLink="/Treno/{{item.numeroTreno}}/{{item.codOrigine}}" style="cursor: pointer;" title="Monitora">{{item.numeroTreno}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}">{{item.compOrarioArrivo}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}" routerLink="/Stazione/{{item.origine}}" style="cursor: pointer;" title="Vai">{{item.origine}}</td>
+                    <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop'),'InOrario': item.compRitardo[0].includes('orario')}">{{item.compRitardo[0]}}</td>
+                    <td id="Mobile" *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoArrivoDescrizione}}</td>
+                    <ng-template #altro>
+                        <td id="Mobile">{{item.binarioProgrammatoArrivoDescrizione}}</td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="(ArriviOPartenze == 'Arrivi') && (loadingArrivi == false)" style="text-align:right">
+            <pagination-controls id="Arrivi" (pageChange)="p2 = $event"></pagination-controls>
+        </div>
+
+    </div>
+
+
+</div>

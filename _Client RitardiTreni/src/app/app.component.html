@@ -1,0 +1,106 @@
+<div class="wrapper">
+  <!-- Sidebar Holder -->
+  <nav id="sidebar" [ngClass]="{'active' : toggle}" style="cursor: default;">
+    <div class="sidebar-header" style="text-align: left;">
+      <img routerLink="/HomePage" src="assets/img/LogoRitardiTreni.png" alt="logo" height="100%" width="190px">
+    </div>
+    <hr>
+
+    <ul class="list-unstyled components" style="padding-top:50px">
+      <li routerLink="/HomePage" (click)="ChiudiMobile()" routerLinkActive="active" style="cursor: pointer;">
+        <strong>
+          <a>Home</a>
+        </strong>
+      </li>
+
+      <li style="padding-top:30px">
+        <strong>
+          <a style="cursor: pointer;" (click)="CollapseRic = !CollapseRic" [ngClass]="{'collapsed' : !CollapseRic}">Ricerche</a>
+        </strong>
+        <ul class="list-unstyled collapse" style="cursor: pointer;" [ngClass]="{'show' : !CollapseRic}" id="pageSubmenu">
+          <li routerLink="/Stazione" (click)="ChiudiMobile()" routerLinkActive="active" style=" background: #7386D5;">
+            <a>Stazione</a>
+          </li>
+          <li routerLink="/Treno" (click)="ChiudiMobile()" routerLinkActive="active" style=" background: #7386D5;">
+            <a>Treno</a>
+          </li>
+          <li routerLink="/Viaggio" (click)="ChiudiMobile()" routerLinkActive="active" style=" background: #7386D5;">
+            <a>Viaggio</a>
+          </li>
+        </ul>
+      </li>
+
+      <li style="padding-top:30px">
+        <strong>
+          <a style="cursor: pointer;" (click)="CollapseLogin = !CollapseLogin" [ngClass]="{'collapsed' : CollapseLogin}">Area riservata</a>
+        </strong>
+
+        <ul *ngIf="Loggato == false" class="list-unstyled collapse" [ngClass]="{'show' : CollapseLogin}" id="riservSubmenu">
+          <li style="padding-left:30px">
+            <form style="width:140px" [formGroup]="loginFormMenu" novalidate>
+              <div class="form-group">
+                <label for="Username" class="col-form-label-sm">Username</label>
+                <input type="text" formControlName="username" class="form-control form-control-sm" id="Username" placeholder="Username">
+              </div>
+              <div class="form-group">
+                <label for="Password" class="col-form-label-sm">Password</label>
+                <input type="password" formControlName="password" class="form-control form-control-sm" id="Password" placeholder="Password">
+              </div>
+              <button type="button" style="width: 50%" (click)="login()" class="btn btn-primary btn-sm">Login</button>
+              <button type="button" style="width: 50%" class="btn btn-secondary btn-sm" (click)="ChiudiMobile()" routerLink="/Registrazione">Register</button>
+            </form>
+          </li>
+        </ul>
+
+        <ul *ngIf="Loggato == true" class="list-unstyled collapse" [ngClass]="{'show' : CollapseLogin}" id="riservSubmenu">
+          <li style="padding-left:30px;  margin-top:13px; margin-bottom: 10px">
+            Benvenuto <i>{{username}}</i>
+          </li>
+          <li routerLink="/User/paginaPrincipale" routerLinkActive="active" style=" background: #7386D5;">
+            <a>Area personale</a>
+          </li>
+          <li routerLink="/User/impostazioni" routerLinkActive="active" style=" background: #7386D5;">
+            <a>Impostazioni</a>
+          </li>
+          <li style="padding-left:30px; margin-top:13px">
+            <button type="button" style="width: 100px" class="btn btn-secondary btn-sm" (click)="logOut()">LogOut</button>
+          </li>
+        </ul>
+      </li>
+
+      <li style="padding-top:30px">
+        <strong>
+          <a routerLink="/Informazioni" (click)="ChiudiMobile()"  routerLinkActive="active" style="cursor: pointer;">Informazioni</a>
+        </strong>
+      </li>
+
+    </ul>
+  </nav>
+
+  <!-- Page Content Holder -->
+  <div id="content" style='width:100%'>
+
+    <nav class="navbar navbar-dark" style="background-color: #7386D5; font-family: 'Poppins', sans-serif; color: white">
+      <div class="container-fluid">
+
+        <div class="navbar-header">
+          <button type="button" id="sidebarCollapse" (click)="toggle = !toggle" [ngClass]="{'active' : toggle}" class="navbar-btn"
+            style="cursor: pointer;">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+        <h1 style="cursor: default; font-size: 28px">Ritardi treni</h1>
+      </div>
+    </nav>
+
+    <div class="container-fluid" style="padding: 0 0 0 0">
+      <router-outlet></router-outlet>
+    </div>
+
+    <cookie-law name="InformativaPrivacy" expiration="7" learnMore="/Privacy"></cookie-law>
+
+  </div>
+
+</div>

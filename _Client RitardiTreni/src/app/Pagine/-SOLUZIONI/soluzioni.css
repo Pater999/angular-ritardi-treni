@@ -1,0 +1,59 @@
+.ng-select.custom {
+    border: 0px;
+    min-height: 50px;
+    border: 0;
+    height: 50px;
+    font-size: 16px;
+    cursor: text;
+}
+
+.ng-select.custom .ng-select-container  {            
+    min-height: 50px;
+    border-radius: 0;
+    border: 0;
+    height: 0px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: text;
+}
+
+.ng-select-container {
+    padding-left: 9px;
+    cursor: text;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    padding-left: 19px;
+    cursor: text;
+}
+
+input[type="date"]::-webkit-inner-spin-button{
+    display: none;
+}
+
+
+
+@media (max-width: 822px) 
+{
+    #Desktop
+    {
+        display: none;
+    }
+}
+
+@media (min-width: 822px) 
+{
+    #Mobile
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 381px) 
+{
+    #Mobile2
+    {
+        display: none;
+    }
+}
+

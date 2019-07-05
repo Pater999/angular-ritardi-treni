@@ -1,0 +1,39 @@
+.ng-select.custom {
+    border:0px;
+    min-height: 50px;
+    border: 0;
+    height: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.ng-select.custom .ng-select-container  {            
+    min-height: 50px;
+    border-radius: 0;
+    border: 0;
+    height: 0px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: text;
+    width: 100%;
+}
+
+.ng-select-container {
+    padding-left: 9px;
+    width: 100%;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    padding-left: 19px;
+    width: 100%;
+}
+
+.DataPicker {
+    border: 0px;
+    width: 70%;
+    height: 50px;
+    padding-left: 15px;
+
+}
+

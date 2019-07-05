@@ -1,0 +1,131 @@
+<div class="row">
+        <div class="col-lg-6 col-xl-6" [ngClass]="{'col-md-12': !StazioneSelezionata,'col-md-4': StazioneSelezionata}">
+                <div class="card" style="width: 100%;" style="cursor: default">
+                        <div class="card-header" style="font-weight: bold;">
+                                Cerca stazione
+                        </div>
+                        <ul class="list-group list-group-flush" style="cursor: text;">
+                                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px;">
+                                        <ng-select class="custom" [items]="Stazioni" bindLabel="Nome" bindValue="Id" [loading]="StazioneLoading" [typeahead]="StazioneTypehead"
+                                                [(ngModel)]="StazioneSelezionata" (change)="onChange()">
+                                        </ng-select>
+                                </li>
+                        </ul>
+                </div>
+
+                <br>
+        </div>
+
+
+        <div *ngIf="StazioneSelezionata" class="col-md-8 col-lg-6 col-xl-6" style="text-align: center">
+                <div class="card" style="width: 100%;" style="cursor: default">
+                        <div class="card-header" style="font-weight: bold;">
+                                Stazione - {{StazioneSelezionataNome}}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                                <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; height: 50px; line-height: 44px">
+                                        <button title="Aggiorna" type="button" class="btn btn-1 btn-success" (click)="Aggiorna()">
+                                                <img style="width:23px;height:23px" src="assets/img/Aggiorna.png" />
+                                        </button>
+                                        <button title="Cambia layout - 1" id="Layout" type="button" class="btn btn-1 btn-danger" (click)="CambiaLayout('Col')">
+                                                <img style="width:23px;height:23px" src="assets/img/LayoutColonne.png" />
+                                        </button>
+                                        <button title="Cambia layout - 2" id="Layout" type="button" class="btn btn-1 btn-danger" (click)="CambiaLayout('Rig')">
+                                                <img style="width:23px;height:23px" src="assets/img/LayoutRighe.png" />
+                                        </button>
+                                        <button title="Mostra sulla mappa" type="button" class="btn btn-1 btn-primary" (click)="MostraMappa()">
+                                                <img style="width:23px;height:23px" src="assets/img/Mappa.png" />
+                                        </button>
+                                        <button *ngIf="StazionePreferita == false" title="Aggiungi a stazioni preferite" type="button" class="btn btn-1 btn-warning"
+                                                (click)="AggiungiStazPreferita(StazioneSelezionataNome)">
+                                                <img style="width:23px;height:23px" src="assets/img/PreferitoX.png" />
+                                        </button>
+                                        <button *ngIf="StazionePreferita == true" title="Rimuovi da stazioni preferite" type="button" class="btn btn-1 btn-warning"
+                                                (click)="RimuoviStazPreferita(StazioneSelezionataNome)">
+                                                <img style="width:23px;height:23px" src="assets/img/Preferito.png" />
+                                        </button>
+                                </li>
+                        </ul>
+                </div>
+                <br>
+        </div>
+</div>
+
+<div *ngIf="StazioneSelezionata" class="row">
+        <div class="col-md-12" [ngClass]="{'col-lg-6 col-xl-6': !layout,'col-lg-12 col-xl-12': layout}">
+
+                <div *ngIf="loadingPartenze" style="height: 600px; width: 100%; position: relative;">
+                        <ngx-loading [show]="loadingPartenze" [config]=""></ngx-loading>
+                </div>
+
+                <table *ngIf="(partenze.length > 0) && (partenze != undefined)" class="table  table-striped" style="cursor:default;">
+                        <thead class="table-default">
+                                <tr class="table-secondary" style="text-align: center">
+                                        <th style="font-size: 17px" colspan="5">PARTENZE</th>
+                                </tr>
+                                <tr style="font-size: 14px">
+                                        <th style="width: 9%">Nr</th>
+                                        <th style="width: 11%">Orario</th>
+                                        <th style="width: 44%">Per</th>
+                                        <th style="width: 28%">Stato</th>
+                                        <th id="Mobile" style="width: 8%">Binario</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                <tr *ngFor="let item of partenze | paginate: { itemsPerPage:9, currentPage: p1, id:'Partenze'} ;let i=index" style="font-size: 14px">
+                                        <td routerLink="/Treno/{{item.numeroTreno}}/{{item.codOrigine}}" style="cursor: pointer;" title="Monitora">{{item.numeroTreno}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}">{{item.compOrarioPartenza}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}" routerLink="/Stazione/{{item.destinazione}}"
+                                                style="cursor: pointer;" title="Vai">{{item.destinazione}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop'),'InOrario': item.compRitardo[0].includes('orario')}">{{item.compRitardo[0]}}</td>
+                                        <td id="Mobile" *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoPartenzaDescrizione}}</td>
+                                        <ng-template #altro>
+                                                <td id="Mobile">{{item.binarioProgrammatoPartenzaDescrizione}}</td>
+                                        </ng-template>
+                                </tr>
+                        </tbody>
+                </table>
+                <div *ngIf="(partenze.length > 0) && (partenze != undefined)" style="text-align:right">
+                        <pagination-controls id="Partenze" (pageChange)="p1 = $event"></pagination-controls>
+                </div>
+                <br>
+        </div>
+
+        <div class="col-md-12" [ngClass]="{'col-lg-6 col-xl-6': !layout,'col-lg-12 col-xl-12': layout}">
+
+                <div *ngIf="loadingArrivi" style="height: 600px; width: 100%; position: relative;">
+                        <ngx-loading [show]="loadingArrivi" [config]=""></ngx-loading>
+                </div>
+
+                <table *ngIf="(arrivi.length > 0) && (arrivi != undefined)" class="table  table-striped" style="cursor: default;">
+                        <thead class="table-default">
+                                <tr class="table-secondary" style="text-align: center">
+                                        <th style="font-size: 17px" colspan="5">ARRIVI</th>
+                                </tr>
+                                <tr style="font-size: 14px">
+                                        <th style="width: 9%">Nr</th>
+                                        <th style="width: 11%">Orario</th>
+                                        <th style="width: 44%">Da</th>
+                                        <th style="width: 28%">Stato</th>
+                                        <th id="Mobile" style="width: 8%">Binario</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                <tr *ngFor="let item of arrivi | paginate: { itemsPerPage:9, currentPage: p2, id:'Arrivi'} ;let i=index" style="font-size: 14px">
+                                        <td routerLink="/Treno/{{item.numeroTreno}}/{{item.codOrigine}}" style="cursor: pointer;" title="Monitora">{{item.numeroTreno}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}">{{item.compOrarioArrivo}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop')}" routerLink="/Stazione/{{item.origine}}" style="cursor: pointer;" title="Vai">{{item.origine}}</td>
+                                        <td [ngClass]="{'InRitardo': item.compRitardo[0].includes('ritardo'),'Soppresso': item.compRitardo[0].includes('sop'),'InOrario': item.compRitardo[0].includes('orario')}">{{item.compRitardo[0]}}</td>
+                                        <td id="Mobile" *ngIf='item.binarioEffettivoPartenzaDescrizione; else altro'>{{item.binarioEffettivoArrivoDescrizione}}</td>
+                                        <ng-template #altro>
+                                                <td id="Mobile">{{item.binarioProgrammatoArrivoDescrizione}}</td>
+                                        </ng-template>
+                                </tr>
+                        </tbody>
+                </table>
+                <div *ngIf="(arrivi.length > 0) && (arrivi != undefined)" style="text-align:right">
+                        <pagination-controls id="Arrivi" (pageChange)="p2 = $event"></pagination-controls>
+                </div>
+                <br>
+        </div>
+</div>
